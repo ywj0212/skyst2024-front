@@ -50,7 +50,7 @@ function Gallery() {
                 "https://cdn.pixabay.com/photo/2021/02/07/02/35/woman-5989926_1280.jpg"
               }
               name={"김영희"}
-              thumbnailUrl={v.thumbnail}
+              videoUrl={v.url}
             />
           </Link>
         ))}

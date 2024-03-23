@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Dashboard() {
-  const [videos, setVideos] = useState([])
+  const [videos, setVideos] = useState([]);
 
   useEffect(() => {
     getVideos();
@@ -25,24 +25,33 @@ function Dashboard() {
     }, 1000)
   }
   const getVideos = async () => {
-    const response = await fetch("https://api-skyst.mirix.kr/video/all/skyst2024/", {
-      method: "GET", // 또는 "POST" 만약 백엔드가 POST 요청을 처리한다면
-      // 필요한 경우 추가 헤더를 설정할 수 있습니다.
-      headers: {
-        "Content-Type": "application/json",
-        // Authorization 헤더나 다른 인증/인가 헤더가 필요할 수 있습니다.
-      },
-    });
+    const response = await fetch(
+      "https://api-skyst.mirix.kr/video/all/skyst2024/",
+      {
+        method: "GET", // 또는 "POST" 만약 백엔드가 POST 요청을 처리한다면
+        // 필요한 경우 추가 헤더를 설정할 수 있습니다.
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization 헤더나 다른 인증/인가 헤더가 필요할 수 있습니다.
+        },
+      }
+    );
     if (!response.ok) throw new Error("Network response was not ok.");
     const data = await response.json();
     setVideos(data.data.reverse());
-  }
+  };
 
   return (
     <div className="bg-slate-100 pb-24">
       <div className="hidden h-80 opacity-80"></div>
       <div className="hidden h-0 opacity-0"></div>
-      <div className={"transition duration-300 flex-col " + (isNotification ? " h-80 opacity-100 " : " h-0 opacity-0 ") + " z-10 absolute inset-x-0 top-0 bg-gradient-to-b from-amber-400/70 to-transparent"}>
+      <div
+        className={
+          "transition duration-300 flex-col " +
+          (isNotification ? " h-80 opacity-100 " : " h-0 opacity-0 ") +
+          " z-10 absolute inset-x-0 top-0 bg-gradient-to-b from-amber-400/70 to-transparent"
+        }
+      >
         <div className="flex-1 mx-auto">
           <Link to="/player" state={{url: newVidUrl}}>
             <NotificationCard question={"지금 당장 자식에게 하고 싶은 말은 무엇인가요?"} />
@@ -60,25 +69,26 @@ function Dashboard() {
         </div>
         <StoryContainer>
           {videos.map((v, idx) => (
-            <Link to="/player" state={{url: v.url}}>
-              <StoryCard  key={idx}
-                          date={v.datetime}
-                          thumbnailUrl={v.thumbnail} />
+            <Link to="/player" state={{ url: v.url }}>
+              <StoryCard key={idx} date={v.datetime} videoUrl={v.url} />
             </Link>
           ))}
-
         </StoryContainer>
 
-        <ProductCard  
-                      date={"2024년 3월 23일"}
-                      today={false}
-                      question={"오늘 당신의 기분은 어떠신가요?"}
-                      profileUrl={"https://cdn.pixabay.com/photo/2021/02/07/02/35/woman-5989926_1280.jpg"}
-                      name={"김영희"}
-                      thumbnailUrl={"https://cdn.pixabay.com/photo/2015/09/05/21/51/reading-925589_1280.jpg"}
-                      availableAfter={"2024년 4월 1일"}
-                    />
-                    
+        <ProductCard
+          date={"2024년 3월 23일"}
+          today={false}
+          question={"오늘 당신의 기분은 어떠신가요?"}
+          profileUrl={
+            "https://cdn.pixabay.com/photo/2021/02/07/02/35/woman-5989926_1280.jpg"
+          }
+          name={"김영희"}
+          thumbnailUrl={
+            "https://cdn.pixabay.com/photo/2015/09/05/21/51/reading-925589_1280.jpg"
+          }
+          availableAfter={"2024년 4월 1일"}
+        />
+
         {videos.map((v, idx) => (
           <Link to="/player" state={{ url: v.url }}>
             <ProductCard
