@@ -101,7 +101,7 @@ function Upload() {
     console.log(formData.get("question"));
     try {
       // `question` 쿼리 파라미터를 포함하여 요청 URL을 구성합니다.
-      const urlWithParams = `/api/video/upload?question=${encodeURIComponent(
+      const urlWithParams = `https://api-skyst.mirix.kr/video/upload?question=${encodeURIComponent(
         formData.get("question")
       )}`;
 
