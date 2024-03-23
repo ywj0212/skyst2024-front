@@ -20,12 +20,12 @@ function Login() {
 
   return <>
     <div className="flex min-h-screen content-center">
-      <aside className="hidden lg:block flex-1">
+      <aside className="hidden flex-1">
         <img className="absolute w-64 top-1/2 transform -translate-y-1/2 right-1/2 -translate-x-44" src="http://placehold.it/1080x2000?text=phone_mockup" />
         <img className="absolute w-72 top-1/2 transform -translate-y-1/2 right-1/2 -translate-x-8 shadow-2xl shadow-slate-700/20" src="http://placehold.it/1080x2000?text=phone_mockup" />
       </aside>
       <div className="flex-1 flex">
-        <div className="mx-10 my-auto w-full lg:max-w-96 flex-col space-y-6">
+        <div className="mx-auto px-10 my-auto w-full max-w-2xl flex-col space-y-6">
           <img className="mx-auto mb-6 h-36 w-full -translate-x-1" src="/timecapsule_logo.svg"/>
           {invalid ?
           <div className="text-red-500 pt-8">
@@ -52,7 +52,7 @@ function Login() {
           <button className="w-full h-12 bg-white border rounded">Google로 로그인</button>
 
           <div className="text-center">
-            계정이 없으신가요? <Link to="/register" className="text-blue-500 underline">가입하기</Link>
+            계정이 없으신가요? <Link to="/login" className="text-blue-500 underline">가입하기</Link>
           </div>
         </div>
       </div>
