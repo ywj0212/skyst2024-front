@@ -79,7 +79,7 @@ function Upload() {
         // 파일 업로드를 위한 FormData 준비
         const formData = new FormData();
         formData.append("video", blob, "recorded_video.webm"); // Blob을 파일로 추가
-        formData.append("question", "여기에 질문 내용을 추가"); // 질문 내용 추가
+        formData.append("question", "자녀들에게 하고 싶은 말은 무엇인가요?"); // 질문 내용 추가
 
         // 파일 업로드 함수 호출
         await uploadVideo(formData);
@@ -98,6 +98,7 @@ function Upload() {
   };
 
   const uploadVideo = async (formData) => {
+    console.log(formData.get("question"));
     try {
       // `question` 쿼리 파라미터를 포함하여 요청 URL을 구성합니다.
       const urlWithParams = `/api/video/upload?question=${encodeURIComponent(
