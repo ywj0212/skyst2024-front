@@ -97,11 +97,11 @@ function Upload() {
     }
   };
 
-  const uploadVideo = async (question) => {
+  const uploadVideo = async (formData) => {
     try {
       // `question` 쿼리 파라미터를 포함하여 요청 URL을 구성합니다.
-      const urlWithParams = `/video/upload?question=${encodeURIComponent(
-        question
+      const urlWithParams = `/api/video/upload?question=${encodeURIComponent(
+        formData.get("question")
       )}`;
 
       // fetch API를 사용하여 GET 요청을 보냅니다.
