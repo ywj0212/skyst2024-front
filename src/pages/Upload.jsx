@@ -101,16 +101,16 @@ function Upload() {
     console.log(formData.get("question"));
     try {
       // `question` 쿼리 파라미터를 포함하여 요청 URL을 구성합니다.
-      const urlWithParams = `https://api-skyst.mirix.kr/video/upload/?question=${encodeURIComponent(
+      const urlWithParams = `api/video/upload?question=${encodeURIComponent(
         formData.get("question")
       )}`;
 
       // fetch API를 사용하여 GET 요청을 보냅니다.
       const response = await fetch(urlWithParams, {
-        method: "GET", // 또는 "POST" 만약 백엔드가 POST 요청을 처리한다면
-        // 필요한 경우 추가 헤더를 설정할 수 있습니다.
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
           // Authorization 헤더나 다른 인증/인가 헤더가 필요할 수 있습니다.
         },
       });
@@ -119,10 +119,59 @@ function Upload() {
 
       // 응답에서 pre-signed URL을 추출합니다.
       const data = await response.json();
-      console.log("Received pre-signed URL:", data.url);
+      console.log("Received pre-signed URL:", data.video);
 
-      // 이제 `data.url`을 사용하여 S3에 직접 파일을 업로드할 수 있습니다.
-      // 예: uploadFileToS3(data.url, file); 여기서 file은 업로드할 파일 객체입니다.
+      // 영상 업로드
+      const uploadVideoResponse = await fetch(data.video, {
+        method: "PUT",
+        body: formData.get("video"),
+        headers: {
+          "Content-Type": "video/webm", // 업로드할 파일의 콘텐츠 유형 지정
+        },
+      });
+
+      // 썸네일 이미지 생성
+      const videoBlob = formData.get("video");
+      const videoUrl = URL.createObjectURL(videoBlob);
+      const video = document.createElement("video");
+      video.src = videoUrl;
+      video.currentTime = 0; // 영상의 첫 프레임으로 이동
+      await new Promise((resolve) =>
+        video.addEventListener("loadeddata", resolve)
+      );
+
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas
+        .getContext("2d")
+        .drawImage(video, 0, 0, canvas.width, canvas.height);
+      const thumbnailBlob = await new Promise((resolve) =>
+        canvas.toBlob(resolve, "image/jpeg")
+      );
+
+      // 썸네일 이미지 업로드를 위한 pre-signed URL 가져오기
+      const thumbnailUploadResponse = await fetch(data.image, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization 헤더나 다른 인증/인가 헤더가 필요할 수 있습니다.
+        },
+      });
+
+      if (!thumbnailUploadResponse.ok)
+        throw new Error("Network response was not ok.");
+
+      const thumbnailUploadUrl = await thumbnailUploadResponse.json();
+
+      // S3에 썸네일 이미지 업로드
+      await fetch(thumbnailUploadUrl.url, {
+        method: "PUT",
+        body: thumbnailBlob,
+        headers: {
+          "Content-Type": "image/jpeg",
+        },
+      });
     } catch (error) {
       console.error("Failed to get pre-signed URL:", error);
     }
