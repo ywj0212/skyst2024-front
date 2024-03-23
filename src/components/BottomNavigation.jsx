@@ -19,14 +19,16 @@ const BottomNavigation = ({ addButton = true }) => {
         <div className="text-gray-500 hover:text-indigo-500">
           <FontAwesomeIcon icon={faSearch} size="lg" />
         </div>
-        {addButton ? 
-        <div className="w-16 h-16 absolute bg-indigo-600 flex items-center justify-center bottom-2 right-1/2 transform translate-x-1/2 mb-5 text-white rounded-full p-3 hover:bg-gradient-to-b hover:from-indigo-500 hover:via-indigo-600 hover:to-indigo-700">
-          <FontAwesomeIcon icon={faPlus} size="xl" />
-        </div>
-        : null}
-        <div className="text-white hover:text-indigo-500">
-          <FontAwesomeIcon icon={faHeart} size="lg" />
-        </div>
+        {addButton ? (
+          <div className="w-16 h-16 absolute bg-indigo-600 flex items-center justify-center bottom-2 right-1/2 transform translate-x-1/2 mb-5 text-white rounded-full p-3 hover:bg-gradient-to-b hover:from-indigo-500 hover:via-indigo-600 hover:to-indigo-700">
+            <FontAwesomeIcon icon={faPlus} size="xl" />
+          </div>
+        ) : null}
+        {addButton ? (
+          <div className="text-white hover:text-indigo-500">
+            <FontAwesomeIcon icon={faHeart} size="lg" />
+          </div>
+        ) : null}
         <div className="text-gray-500 hover:text-indigo-500">
           <FontAwesomeIcon icon={faHeart} size="lg" />
         </div>
