@@ -30,4 +30,4 @@ jobs:
     - name: Build React CSR App
       run: CI=false npm run build
     - name: Transfer file to apache static folder
-      run: rsync -rltDvz dist/ /home/ubuntu/www
+      run: rsync -rlDvz dist/ /home/ubuntu/www
