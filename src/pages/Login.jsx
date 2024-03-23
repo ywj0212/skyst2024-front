@@ -8,16 +8,17 @@ function Login() {
 
   const onLogin = () => {
     if (id == "monster_energy0323") {
-      navigate("/gallery");
-    } else if (id == "skyst2024") {
-      navigate("/dashboard");
-    } else {
+      navigate("/gallery")
+    }
+    else if (id == "skyst2024") {
+      navigate("/dashboard")
+    }
+    else {
       setInvalid(true);
     }
   };
 
-  return <>
-    <div className="flex min-h-screen content-center">
+  return (<div className="flex min-h-screen content-center">
       <aside className="hidden flex-1">
         <img className="absolute w-64 top-1/2 transform -translate-y-1/2 right-1/2 -translate-x-44" src="http://placehold.it/1080x2000?text=phone_mockup" />
         <img className="absolute w-72 top-1/2 transform -translate-y-1/2 right-1/2 -translate-x-8 shadow-2xl shadow-slate-700/20" src="http://placehold.it/1080x2000?text=phone_mockup" />
@@ -41,27 +42,20 @@ function Login() {
           </div>
           <button onClick={onLogin} className="w-full h-12 bg-blue-500 text-white rounded">로그인</button>
 
-            <div className="flex space-x-4">
-              <div className="flex-grow h-0 my-auto border-b border-slate-300"></div>
-              <div className="flex-grow-0 text-slate-700 font-semibold">
-                또는
-              </div>
-              <div className="flex-grow h-0 my-auto border-b border-slate-300"></div>
-            </div>
-            <button className="w-full h-12 bg-yellow-300 text-slate-700 rounded-xl">
-              카카오톡으로 로그인
-            </button>
-            <button className="w-full h-12 bg-white border text-slate-700 rounded-xl">
-              Google로 로그인
-            </button>
+          <div className="flex space-x-4">
+            <div className="flex-grow h-0 my-auto border-b border-black"></div>
+            <div className="flex-grow-0">또는</div>
+            <div className="flex-grow h-0 my-auto border-b border-black"></div>
+          </div>
+          <button className="w-full h-12 bg-yellow-300 rounded">카카오톡으로 로그인</button>
+          <button className="w-full h-12 bg-white border rounded">Google로 로그인</button>
 
           <div className="text-center">
-            계정이 없으신가요? <Link to="/register" className="text-blue-500 underline">가입하기</Link>
+            계정이 없으신가요? <Link to="/login" className="text-blue-500 underline">가입하기</Link>
           </div>
         </div>
       </div>
-    </>
-  );
+    </div>);
 }
 
 export default Login;
