@@ -10,6 +10,7 @@ const ProductCard = ({
   name,
   videoUrl,
   availableAfter = "",
+  thumbnailUrl = null
 }) => {
   const [thumbnail, setThumbnail] = useState("");
   return (
@@ -33,11 +34,10 @@ const ProductCard = ({
       ) : (
         <>
           <div className="relative w-full h-64">
-            <VideoThumbnail
-              videoUrl={videoUrl}
-              thumbnailHandler={(thumbnail) => console.log(thumbnail)}
-              width={1000}
-              height={1000}
+            <img
+              className="object-cover w-full h-full grayscale brightness-75"
+              src={thumbnailUrl}
+              alt="Video Thumbnail"
             />
             <p className="absolute bottom-0 right-0 m-4 text-white">
               <FontAwesomeIcon icon="fa-solid fa-lock" /> &nbsp;&nbsp;
