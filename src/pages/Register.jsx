@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function Register() {
   return <>
     <div className="flex min-h-screen content-center">
-      <aside className="hidden lg:block flex-1">
+      <aside className="hidden flex-1">
         <img className="absolute w-64 top-1/2 transform -translate-y-1/2 right-1/2 -translate-x-44" src="http://placehold.it/1080x2000?text=phone_mockup" />
         <img className="absolute w-72 top-1/2 transform -translate-y-1/2 right-1/2 -translate-x-8 shadow-2xl shadow-slate-700/20" src="http://placehold.it/1080x2000?text=phone_mockup" />
       </aside>

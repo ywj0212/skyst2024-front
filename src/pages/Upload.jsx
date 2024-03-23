@@ -10,6 +10,34 @@ function Upload() {
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [facingMode, setFacingMode] = useState("user"); // 초기 카메라 모드를 전면으로 설정
 
+  const [question, setQuestion] = useState("");
+
+  const questions = [
+    "자녀가 태어났을 때 느낀 감정은 어땠나요?",
+    "자녀에게 전하고 싶은 가장 중요한 삶의 교훈은 무엇인가요?",
+    "우리 가족의 소중한 추억 중 하나를 말해주세요.",
+    "자녀가 어릴 때 좋아했던 이야기나 놀이는 무엇이었나요?",
+    "자녀가 어려움을 겪을 때 어떻게 위로하고 싶나요?",
+    "당신의 어린 시절 이야기 중 자녀와 공유하고 싶은 것이 있나요?",
+    "자녀에게 전하고 싶은 가장 중요한 가치는 무엇인가요?",
+    "당신이 자녀에게 가장 자랑스러워하는 순간은 언제였나요?",
+    "미래에 자녀가 이루었으면 하는 꿈은 무엇인가요?",
+    "당신의 삶에서 가장 행복했던 순간은 언제인가요?",
+    "자녀에게 전하고 싶은 사랑의 메시지가 있다면 무엇인가요?",
+    "당신이 자녀에게 배운 가장 중요한 교훈은 무엇인가요?",
+    "자녀와 함께하고 싶은 미래의 활동이나 여행은 무엇인가요?",
+    "가족으로서 우리에게 가장 중요한 것은 무엇이라고 생각하나요?",
+    "자녀가 자라면서 당신에게 가장 큰 영향을 준 사건은 무엇인가요?",
+    "당신의 삶에서 가장 도전적이었던 순간은 어떻게 극복했나요?",
+    "자녀에게 남기고 싶은 가장 소중한 추억은 무엇인가요?",
+    "가족 전통 중 하나를 소개해주세요.",
+    "자녀가 커서 알게 될 때까지 기다린 비밀이 있나요?",
+  ];
+
+  useEffect(() => {
+    setQuestion(questions[Math.floor(Math.random() * questions.length)]);
+  }, [])
+
   useEffect(() => {
     const constraints = {
       audio: true,
@@ -79,7 +107,7 @@ function Upload() {
         // 파일 업로드를 위한 FormData 준비
         const formData = new FormData();
         formData.append("video", blob, "recorded_video.webm"); // Blob을 파일로 추가
-        formData.append("question", "자녀들에게 하고 싶은 말은 무엇인가요?"); // 질문 내용 추가
+        formData.append("question", question); // 질문 내용 추가
 
         // 파일 업로드 함수 호출
         await uploadVideo(formData);
@@ -137,7 +165,7 @@ function Upload() {
           <div className="bg-gradient-to-tr from-indigo-400 to-indigo-500 w-full rounded-2xl relative shadow-xl shadow-slate-200 px-6 py-4">
             <h2 className="text-sm text-white pt-4">오늘의 질문</h2>
             <h1 className="text-xl font-bold text-white dark:text-white pb-4">
-              지금 당장 자식에게 하고 싶은 말은 무엇인가요?
+              {question}
             </h1>
           </div>
         </div>

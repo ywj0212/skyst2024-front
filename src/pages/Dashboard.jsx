@@ -17,12 +17,10 @@ function Dashboard() {
 
   const [isNotification, setIsNotification] = useState(false);
   const [newVidUrl, setNewVidUrl] = useState("");
-  const Notification = () => {
+  const Notification = async () => {
     if (videos.length == 0) return;
-    setTimeout(() => {
-      setIsNotification(true);
-      setNewVidUrl(videos[0].url);
-    }, 1000);
+    await getVideos();
+    setIsNotification(true);
   };
   const getVideos = async () => {
     const response = await fetch(
@@ -53,7 +51,7 @@ function Dashboard() {
         }
       >
         <div className="flex-1 mx-auto">
-          <Link to="/player" state={{ url: newVidUrl }}>
+          <Link onClick={() => setNewVidUrl(videos[0].url)} to="/player" state={{ url: newVidUrl }}>
             <NotificationCard
               question={"지금 당장 자식에게 하고 싶은 말은 무엇인가요?"}
             />
