@@ -6,6 +6,7 @@ import NotificationCard from "../components/NotificationCard";
 import ProductCard from "../components/ProductCard";
 import StoryCard from "../components/StoryCard";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
   const [videos, setVideos] = useState([])
@@ -43,9 +44,11 @@ function Dashboard() {
         </div>
         <StoryContainer>
           {videos.map((v, idx) => (
-            <StoryCard  key={idx}
-                        date={v.datetime}
-                        thumbnailUrl={v.thumbnail} />
+            <Link to="/player" state={{url: v.url}}>
+              <StoryCard  key={idx}
+                          date={v.datetime}
+                          thumbnailUrl={v.thumbnail} />
+            </Link>
           ))}
 
         </StoryContainer>

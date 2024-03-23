@@ -4,6 +4,7 @@ import BottomNavigation from "../components/BottomNavigation";
 import QuestionCard from "../components/QuestionCard";
 import ProductCard from "../components/ProductCard";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Gallery() {
   const [videos, setVideos] = useState([])
@@ -31,9 +32,12 @@ function Gallery() {
     <div className="bg-slate-100">
       <Container>
         <Navbar name={"영희"} />
-        <QuestionCard question={"지금 당장 자식에게 하고 싶은 말은 무엇인가요?"} />
+        <Link to="/upload">
+          <QuestionCard question={"지금 당장 자식에게 하고 싶은 말은 무엇인가요?"} />
+        </Link>
         {videos.map((v, idx) => (
-          <ProductCard key={idx}
+          <Link to="/player" state={{url: v.url}}>
+            <ProductCard key={idx}
                       date={v.datetime}
                       today={false}
                       question={v.question}
@@ -41,6 +45,7 @@ function Gallery() {
                       name={"김영희"}
                       thumbnailUrl={v.thumbnail}
                     />
+          </Link>
         ))}
         
       </Container>
