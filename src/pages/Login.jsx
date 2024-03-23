@@ -26,7 +26,7 @@ function Login() {
       </aside>
       <div className="flex-1 flex">
         <div className="mx-10 my-auto w-full lg:max-w-96 flex-col space-y-6">
-          <img className="mx-auto mb-6 h-36 w-full -translate-x-7" src="/timecapsule_logo.svg"/>
+          <img className="mx-auto mb-6 h-36 w-full -translate-x-1" src="/timecapsule_logo.svg"/>
           {invalid ?
           <div className="text-red-500 pt-8">
             <p>* 아이디 또는 비밀번호가 잘못되었습니다.</p>
