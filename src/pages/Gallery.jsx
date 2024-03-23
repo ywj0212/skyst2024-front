@@ -27,7 +27,7 @@ function Gallery() {
     );
     if (!response.ok) throw new Error("Network response was not ok.");
     const data = await response.json();
-    setVideos(data.data);
+    setVideos(data.data.reverse());
   };
 
   return (
