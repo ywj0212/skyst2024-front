@@ -131,12 +131,12 @@ function Upload() {
 
   const QuestionCard = () => {
     return (
-      <div className="flex justify-center w-full relative top-16">
+      <div className="flex justify-center w-full relative top-16 px-[1rem]">
         <div className="max-w-md overflow-hidden rounded-2xl">
-          <div className="bg-gradient-to-tr from-indigo-200 to-indigo-300 w-full rounded-2xl relative shadow-xl shadow-slate-200 px-8 py-4">
-            <h2 className="text-sm text-indigo-500 pt-4">오늘의 질문</h2>
-            <h1 className="text-xl font-bold text-indigo-600 dark:text-white pb-4">
-              자녀들에게 하고 싶은 말은 무엇인가요?
+          <div className="bg-gradient-to-tr from-indigo-400 to-indigo-500 w-full rounded-2xl relative shadow-xl shadow-slate-200 px-6 py-4">
+            <h2 className="text-sm text-white pt-4">오늘의 질문</h2>
+            <h1 className="text-xl font-bold text-white dark:text-white pb-4">
+              지금 당장 자식에게 하고 싶은 말은 무엇인가요?
             </h1>
           </div>
         </div>
