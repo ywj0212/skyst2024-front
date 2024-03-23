@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
-import Container from "../components/Container";
 import Navbar from "../components/Navbar";
 
 function Upload() {
   const videoOutputRef = useRef(null);
   const [mediaStream, setMediaStream] = useState(null);
+  const [isRecording, setIsRecording] = useState(false);
   const [recordedMediaURL, setRecordedMediaURL] = useState(null);
   const [mediaRecorder, setMediaRecorder] = useState(null);
 
@@ -18,8 +18,15 @@ function Upload() {
     });
   }, []);
 
-  useEffect(() => {
-    // 미디어 스트림이 준비되면 자동으로 녹화를 시작합니다.
+  const toggleRecording = () => {
+    if (!isRecording) {
+      startRecording();
+    } else {
+      stopRecording();
+    }
+  };
+
+  const startRecording = () => {
     if (mediaStream && !mediaRecorder) {
       const newMediaRecorder = new MediaRecorder(mediaStream, {
         mimeType: "video/webm; codecs=vp9",
@@ -40,38 +47,51 @@ function Upload() {
 
       newMediaRecorder.start();
       setMediaRecorder(newMediaRecorder);
+      setIsRecording(true);
     }
-  }, [mediaStream, mediaRecorder]);
+  };
 
   const stopRecording = () => {
     if (mediaRecorder) {
       mediaRecorder.stop();
       setMediaRecorder(null);
-    }
-  };
-
-  const downloadRecordedVideo = () => {
-    if (recordedMediaURL) {
-      const link = document.createElement("a");
-      document.body.appendChild(link);
-      link.href = recordedMediaURL;
-      link.download = "video.webm";
-      link.click();
-      document.body.removeChild(link);
+      setIsRecording(false);
     }
   };
 
   return (
-    <Container>
-      <Navbar />
-      <video ref={videoOutputRef} autoPlay playsInline muted></video>
-      <button onClick={stopRecording} id="finish-btn">
-        녹화 종료
-      </button>
-      <button onClick={downloadRecordedVideo} id="download-btn">
-        다운로드
-      </button>
-    </Container>
+    <div className="relative w-full h-screen">
+      <video
+        ref={videoOutputRef}
+        className="absolute w-full h-full object-cover"
+        autoPlay
+        playsInline
+        muted
+      ></video>
+      <div className="absolute top-0 left-0 p-5 z-10 text-white">
+        <Navbar />
+      </div>
+      <div className="absolute top-20 left-5 right-5 p-5 z-10 text-white bg-black bg-opacity-70 rounded-xl mx-auto">
+        <h5 className="mb-2 text-2xl font-bold tracking-tight">
+          자식들에게 하고 싶은 말은 무엇인가요?
+        </h5>
+      </div>
+
+      <div className="absolute bottom-5 right-1/2 translate-x-1/2 z-10">
+        <button
+          onClick={toggleRecording}
+          className={`p-2 rounded-full border-2 transition-transform duration-500 ease-in-out ${
+            isRecording ? "bg-red-700 border-white" : "border-red-500"
+          }`}
+        >
+          <div
+            className={`w-12 h-12 ${
+              isRecording ? "bg-white" : "rounded-full bg-red-500"
+            } transition-all duration-500 ease-in-out`}
+          ></div>
+        </button>
+      </div>
+    </div>
   );
 }
 
