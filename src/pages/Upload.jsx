@@ -72,16 +72,41 @@ function Upload() {
   const stopRecording = () => {
     if (mediaRecorder) {
       mediaRecorder.stop();
-      setMediaRecorder(null);
-      setIsRecording(false);
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(mediaData, { type: "video/webm" });
+        const url = URL.createObjectURL(blob);
+        setRecordedMediaURL(url);
+
+        // 녹화가 종료된 후 다운로드 링크 생성 및 자동 클릭
+        const downloadLink = document.createElement("a");
+        document.body.appendChild(downloadLink);
+        downloadLink.style = "display: none";
+        downloadLink.href = url;
+        downloadLink.download = "recorded_video.webm"; // 다운로드될 파일의 이름
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+        setMediaRecorder(null);
+        setIsRecording(false);
+      };
+
+      // 다른 mediaData 처리 로직이 필요하다면 여기에 추가
+      let mediaData = [];
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) {
+          mediaData.push(event.data);
+        }
+      };
     }
   };
 
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-full h-full">
       <video
         ref={videoOutputRef}
-        className="absolute w-full h-full object-cover"
+        className={`absolute w-full h-full object-cover ${
+          facingMode === "user" ? "scale-x-[-1]" : ""
+        }`}
         autoPlay
         playsInline
         muted
