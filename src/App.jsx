@@ -12,6 +12,7 @@ import Logout from "./pages/Logout";
 import Dashboard from "./pages/Dashboard";
 import Gallery from "./pages/Gallery";
 import Upload from "./pages/Upload";
+import Player from "./pages/Player"
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/gallery" element={<Gallery />}></Route>
           <Route path="/upload" element={<Upload />}></Route>
+          <Route path="/player" element={<Player />}></Route>
         </Routes>
       </BrowserRouter>
     </div>
