@@ -13,17 +13,17 @@ function Dashboard() {
 
   useEffect(() => {
     getVideos();
-  }, [])
+  }, []);
 
-  const [isNotification, setIsNotification] = useState(false)
-  const [newVidUrl, setNewVidUrl] = useState("")
+  const [isNotification, setIsNotification] = useState(false);
+  const [newVidUrl, setNewVidUrl] = useState("");
   const Notification = () => {
-    if(videos.length == 0) return;
+    if (videos.length == 0) return;
     setTimeout(() => {
-      setIsNotification(true)
-      setNewVidUrl(videos[0].url)
-    }, 1000)
-  }
+      setIsNotification(true);
+      setNewVidUrl(videos[0].url);
+    }, 1000);
+  };
   const getVideos = async () => {
     const response = await fetch(
       "https://api-skyst.mirix.kr/video/all/skyst2024/",
@@ -53,8 +53,10 @@ function Dashboard() {
         }
       >
         <div className="flex-1 mx-auto">
-          <Link to="/player" state={{url: newVidUrl}}>
-            <NotificationCard question={"지금 당장 자식에게 하고 싶은 말은 무엇인가요?"} />
+          <Link to="/player" state={{ url: newVidUrl }}>
+            <NotificationCard
+              question={"지금 당장 자식에게 하고 싶은 말은 무엇인가요?"}
+            />
           </Link>
         </div>
       </div>
@@ -62,7 +64,10 @@ function Dashboard() {
         <Navbar name={"다해"} />
         <div className="mt-16 flex justify-between items-center">
           <div className="min-w-0 flex-1">
-            <h2 onClick={Notification} className="text-2xl leading-7 text-slate-800 sm:truncate sm:text-3xl sm:tracking-tight">
+            <h2
+              onClick={Notification}
+              className="text-2xl leading-7 text-slate-800 sm:truncate sm:text-3xl sm:tracking-tight"
+            >
               이전의 추억들
             </h2>
           </div>
@@ -100,7 +105,7 @@ function Dashboard() {
                 "https://cdn.pixabay.com/photo/2021/02/07/02/35/woman-5989926_1280.jpg"
               }
               name={"김영희"}
-              thumbnailUrl={v.thumbnail}
+              videoUrl={v.url}
             />
           </Link>
         ))}
