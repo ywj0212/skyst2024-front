@@ -72,31 +72,45 @@ function Upload() {
   const stopRecording = () => {
     if (mediaRecorder) {
       mediaRecorder.stop();
-      mediaRecorder.onstop = () => {
+      mediaRecorder.onstop = async () => {
         const blob = new Blob(mediaData, { type: "video/webm" });
-        const url = URL.createObjectURL(blob);
-        setRecordedMediaURL(url);
+        // setRecordedMediaURL(url); // 이전 다운로드 관련 코드 제거
 
-        // 녹화가 종료된 후 다운로드 링크 생성 및 자동 클릭
-        const downloadLink = document.createElement("a");
-        document.body.appendChild(downloadLink);
-        downloadLink.style = "display: none";
-        downloadLink.href = url;
-        downloadLink.download = "recorded_video.webm"; // 다운로드될 파일의 이름
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
+        // 파일 업로드를 위한 FormData 준비
+        const formData = new FormData();
+        formData.append("video", blob, "recorded_video.webm"); // Blob을 파일로 추가
+        formData.append("question", "여기에 질문 내용을 추가"); // 질문 내용 추가
+
+        // 파일 업로드 함수 호출
+        await uploadVideo(formData);
 
         setMediaRecorder(null);
         setIsRecording(false);
       };
 
-      // 다른 mediaData 처리 로직이 필요하다면 여기에 추가
       let mediaData = [];
       mediaRecorder.ondataavailable = (event) => {
         if (event.data && event.data.size > 0) {
           mediaData.push(event.data);
         }
       };
+    }
+  };
+
+  const uploadVideo = async (formData) => {
+    try {
+      const response = await fetch("http://api-skyst.mirix.kr/video/upload", {
+        // 실제 API 엔드포인트 URL로 교체
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error("Server or network error");
+
+      const result = await response.json();
+      console.log("Upload successful:", result);
+    } catch (error) {
+      console.error("Upload failed:", error);
     }
   };
 
