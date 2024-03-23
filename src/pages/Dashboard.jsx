@@ -13,13 +13,16 @@ function Dashboard() {
 
   useEffect(() => {
     getVideos();
-    // setIsNotification(true)
-    setTimeout(() => setIsNotification(true), 1000)
   }, [])
 
   const [isNotification, setIsNotification] = useState(false)
+  const [newVidUrl, setNewVidUrl] = useState("")
   const Notification = () => {
-    
+    if(videos.length == 0) return;
+    setTimeout(() => {
+      setIsNotification(true)
+      setNewVidUrl(videos[0].url)
+    }, 1000)
   }
   const getVideos = async () => {
     const response = await fetch("https://api-skyst.mirix.kr/video/all/skyst2024/", {
@@ -41,14 +44,16 @@ function Dashboard() {
       <div className="hidden h-0 opacity-0"></div>
       <div className={"transition duration-300 flex-col " + (isNotification ? " h-80 opacity-100 " : " h-0 opacity-0 ") + " z-10 absolute inset-x-0 top-0 bg-gradient-to-b from-amber-400/70 to-transparent"}>
         <div className="flex-1 mx-auto">
-          <NotificationCard question={"지금 당장 자식에게 하고 싶은 말은 무엇인가요?"} />
+          <Link to="/player" state={{url: newVidUrl}}>
+            <NotificationCard question={"지금 당장 자식에게 하고 싶은 말은 무엇인가요?"} />
+          </Link>
         </div>
       </div>
       <Container>
-        <Navbar onClick={Notification} name={"다해"} />
+        <Navbar name={"다해"} />
         <div className="mt-16 flex justify-between items-center">
           <div className="min-w-0 flex-1">
-            <h2 className="text-2xl leading-7 text-slate-800 sm:truncate sm:text-3xl sm:tracking-tight">
+            <h2 onClick={Notification} className="text-2xl leading-7 text-slate-800 sm:truncate sm:text-3xl sm:tracking-tight">
               이전의 추억들
             </h2>
           </div>
