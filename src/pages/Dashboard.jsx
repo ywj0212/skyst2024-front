@@ -62,13 +62,14 @@ function Dashboard() {
       </div>
       <Container>
         <Navbar name={"다해"} />
-        <div className="mt-16 flex justify-between items-center">
+        <div className="border-b border-slate-300 mt-6"></div>
+        <div className="mt-4 flex justify-between items-center">
           <div className="min-w-0 flex-1">
             <h2
               onClick={Notification}
-              className="text-2xl leading-7 text-slate-800 sm:truncate sm:text-3xl sm:tracking-tight"
+              className="text-xl leading-7 font-semibold text-slate-800 sm:truncate sm:text-3xl sm:tracking-tight"
             >
-              이전의 추억들
+              이전의 추억들 🎞️
             </h2>
           </div>
         </div>
