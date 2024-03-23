@@ -1,4 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
+import Container from "../components/Container";
+import Navbar from "../components/Navbar";
 
 function Upload() {
   const videoOutputRef = useRef(null);
@@ -63,7 +65,8 @@ function Upload() {
   };
 
   return (
-    <div>
+    <Container>
+      <Navbar />
       <video ref={videoOutputRef} autoPlay playsInline muted></video>
       <button onClick={startRecording} id="start-btn">
         녹화 시작
@@ -74,7 +77,7 @@ function Upload() {
       <button onClick={downloadRecordedVideo} id="download-btn">
         다운로드
       </button>
-    </div>
+    </Container>
   );
 }
 
