@@ -100,23 +100,19 @@ function Upload() {
   const uploadVideo = async (formData) => {
     console.log(formData.get("question"));
     try {
-      // `question` 쿼리 파라미터를 포함하여 요청 URL을 구성합니다.
       const urlWithParams = `/api/video/upload?question=${encodeURIComponent(
         formData.get("question")
       )}`;
 
-      // fetch API를 사용하여 GET 요청을 보냅니다.
       const response = await fetch(urlWithParams, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // Authorization 헤더나 다른 인증/인가 헤더가 필요할 수 있습니다.
         },
       });
 
       if (!response.ok) throw new Error("Network response was not ok.");
 
-      // 응답에서 pre-signed URL을 추출합니다.
       const data = await response.json();
       console.log("Received pre-signed URL:", data.video);
 
@@ -125,36 +121,7 @@ function Upload() {
         method: "PUT",
         body: formData.get("video"),
         headers: {
-          "Content-Type": "video/webm", // 업로드할 파일의 콘텐츠 유형 지정
-        },
-      });
-
-      // 썸네일 이미지 생성
-      const videoBlob = formData.get("video");
-      const videoUrl = URL.createObjectURL(videoBlob);
-      const video = document.createElement("video");
-      video.src = videoUrl;
-      video.currentTime = 0; // 영상의 첫 프레임으로 이동
-      await new Promise((resolve) =>
-        video.addEventListener("loadeddata", resolve)
-      );
-
-      const canvas = document.createElement("canvas");
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      canvas
-        .getContext("2d")
-        .drawImage(video, 0, 0, canvas.width, canvas.height);
-      const thumbnailBlob = await new Promise((resolve) =>
-        canvas.toBlob(resolve, "image/jpg")
-      );
-
-      // S3에 썸네일 이미지 업로드
-      const uploadImageResponse = await fetch(data.thumbnail, {
-        method: "PUT",
-        body: thumbnailBlob,
-        headers: {
-          "Content-Type": "image/jpg",
+          "Content-Type": "video/webm",
         },
       });
     } catch (error) {
