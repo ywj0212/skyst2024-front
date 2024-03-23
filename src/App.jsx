@@ -1,4 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+
+library.add(fas)
+
 import Landing from './pages/Landing';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -7,7 +13,7 @@ import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
-    <>
+    <div className='h-screen'>
       <BrowserRouter>
         <Routes>
           <Route path="/"           element={<Landing />}>  </Route>
@@ -17,7 +23,7 @@ function App() {
           <Route path="/dashboard"  element={<Dashboard />}></Route>
         </Routes>
       </BrowserRouter>
-    </>
+    </div>
   )
 }
 
