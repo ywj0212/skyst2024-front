@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 function Upload() {
   const videoOutputRef = useRef(null);
@@ -97,57 +97,97 @@ function Upload() {
     }
   };
 
-  const uploadVideo = async (formData) => {
+  const uploadVideo = async (question) => {
     try {
-      const response = await fetch("http://api-skyst.mirix.kr/video/upload", {
-        // 실제 API 엔드포인트 URL로 교체
-        method: "POST",
-        body: formData,
+      // `question` 쿼리 파라미터를 포함하여 요청 URL을 구성합니다.
+      const urlWithParams = `/api/video/upload?question=${encodeURIComponent(
+        question
+      )}`;
+
+      // fetch API를 사용하여 GET 요청을 보냅니다.
+      const response = await fetch(urlWithParams, {
+        method: "GET", // 또는 "POST" 만약 백엔드가 POST 요청을 처리한다면
+        // 필요한 경우 추가 헤더를 설정할 수 있습니다.
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization 헤더나 다른 인증/인가 헤더가 필요할 수 있습니다.
+        },
       });
 
-      if (!response.ok) throw new Error("Server or network error");
+      if (!response.ok) throw new Error("Network response was not ok.");
 
-      const result = await response.json();
-      console.log("Upload successful:", result);
+      // 응답에서 pre-signed URL을 추출합니다.
+      const data = await response.json();
+      console.log("Received pre-signed URL:", data.url);
+
+      // 이제 `data.url`을 사용하여 S3에 직접 파일을 업로드할 수 있습니다.
+      // 예: uploadFileToS3(data.url, file); 여기서 file은 업로드할 파일 객체입니다.
     } catch (error) {
-      console.error("Upload failed:", error);
+      console.error("Failed to get pre-signed URL:", error);
     }
+  };
+
+  const QuestionCard = () => {
+    return (
+      <div className="flex justify-center w-full relative top-16">
+        <div className="max-w-md overflow-hidden rounded-2xl">
+          <div className="bg-gradient-to-tr from-indigo-200 to-indigo-300 w-full rounded-2xl relative shadow-xl shadow-slate-200 px-8 py-4">
+            <h2 className="text-sm text-indigo-500 pt-4">오늘의 질문</h2>
+            <h1 className="text-xl font-bold text-indigo-600 dark:text-white pb-4">
+              자녀들에게 하고 싶은 말은 무엇인가요?
+            </h1>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
     <div className="relative w-full h-full">
-      <video
-        ref={videoOutputRef}
-        className={`absolute w-full h-full object-cover ${
-          facingMode === "user" ? "scale-x-[-1]" : ""
-        }`}
-        autoPlay
-        playsInline
-        muted
-      ></video>
-      <div className="absolute top-0 left-0 p-5 z-10 text-white">
-        <Navbar />
+      {/* Video Container */}
+      <div className="absolute bottom-0 w-full h-full">
+        <video
+          ref={videoOutputRef}
+          className={`w-full h-full object-cover ${
+            facingMode === "user" ? "scale-x-[-1]" : ""
+          }`}
+          autoPlay
+          playsInline
+          muted
+        ></video>
+        {/* QuestionCard Overlay */}
       </div>
-      <div className="absolute top-20 left-5 right-5 p-5 z-10 text-white bg-black bg-opacity-70 rounded-xl mx-auto">
-        <h5 className="mb-2 text-2xl font-bold tracking-tight">
-          자식들에게 하고 싶은 말은 무엇인가요?
-        </h5>
+      <QuestionCard />
+
+      {/* Back Button */}
+      <div className="absolute top-5 left-4 z-10">
+        <Link to="/gallery">
+          <FontAwesomeIcon
+            className="text-white text-xl"
+            icon={["fas", "fa-chevron-left"]}
+          />
+        </Link>
       </div>
 
+      {/* Recording Button */}
       <div className="absolute bottom-10 right-1/2 translate-x-1/2 z-10">
         <button
           onClick={toggleRecording}
-          className={`p-2 rounded-full border-2 transition-transform duration-500 ease-in-out ${
-            isRecording ? "bg-red-700 border-white" : "border-red-500"
+          className={`flex items-center justify-center rounded-full border-4 transition-all duration-500 ease-in-out ${
+            isRecording ? "border-white w-16 h-16" : "border-white w-16 h-16"
           }`}
         >
           <div
-            className={`w-12 h-12 ${
-              isRecording ? "bg-white" : "rounded-full bg-red-500"
-            } transition-all duration-500 ease-in-out`}
+            className={`transition-all duration-400 ease-in-out ${
+              isRecording
+                ? "bg-red-500 w-8 h-8 rounded-md"
+                : "bg-red-500 w-12 h-12 rounded-full"
+            }`}
           ></div>
         </button>
       </div>
+
+      {/* Toggle Facing Mode Button */}
       <div
         className="absolute bottom-12 right-10 translate-x-1/2 z-10"
         onClick={toggleFacingMode}
