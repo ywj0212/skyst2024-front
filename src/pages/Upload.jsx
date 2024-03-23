@@ -101,7 +101,7 @@ function Upload() {
     console.log(formData.get("question"));
     try {
       // `question` 쿼리 파라미터를 포함하여 요청 URL을 구성합니다.
-      const urlWithParams = `api/video/upload?question=${encodeURIComponent(
+      const urlWithParams = `/api/video/upload?question=${encodeURIComponent(
         formData.get("question")
       )}`;
 
@@ -110,7 +110,6 @@ function Upload() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
           // Authorization 헤더나 다른 인증/인가 헤더가 필요할 수 있습니다.
         },
       });
@@ -147,29 +146,15 @@ function Upload() {
         .getContext("2d")
         .drawImage(video, 0, 0, canvas.width, canvas.height);
       const thumbnailBlob = await new Promise((resolve) =>
-        canvas.toBlob(resolve, "image/jpeg")
+        canvas.toBlob(resolve, "image/jpg")
       );
 
-      // 썸네일 이미지 업로드를 위한 pre-signed URL 가져오기
-      const thumbnailUploadResponse = await fetch(data.image, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization 헤더나 다른 인증/인가 헤더가 필요할 수 있습니다.
-        },
-      });
-
-      if (!thumbnailUploadResponse.ok)
-        throw new Error("Network response was not ok.");
-
-      const thumbnailUploadUrl = await thumbnailUploadResponse.json();
-
       // S3에 썸네일 이미지 업로드
-      await fetch(thumbnailUploadUrl.url, {
+      const uploadImageResponse = await fetch(data.thumbnail, {
         method: "PUT",
         body: thumbnailBlob,
         headers: {
-          "Content-Type": "image/jpeg",
+          "Content-Type": "image/jpg",
         },
       });
     } catch (error) {
