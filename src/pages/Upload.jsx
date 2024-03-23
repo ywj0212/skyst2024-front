@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Upload() {
   const videoOutputRef = useRef(null);
@@ -7,16 +8,33 @@ function Upload() {
   const [isRecording, setIsRecording] = useState(false);
   const [recordedMediaURL, setRecordedMediaURL] = useState(null);
   const [mediaRecorder, setMediaRecorder] = useState(null);
+  const [facingMode, setFacingMode] = useState("user"); // 초기 카메라 모드를 전면으로 설정
 
   useEffect(() => {
-    const constraints = { audio: false, video: true };
-    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-      setMediaStream(stream);
-      if (videoOutputRef.current) {
-        videoOutputRef.current.srcObject = stream;
-      }
-    });
-  }, []);
+    const constraints = {
+      audio: true,
+      video: { facingMode: facingMode },
+    };
+
+    // 기존 스트림이 있으면 닫기
+    if (mediaStream) {
+      mediaStream.getTracks().forEach((track) => track.stop());
+    }
+
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then((stream) => {
+        setMediaStream(stream);
+        if (videoOutputRef.current) {
+          videoOutputRef.current.srcObject = stream;
+        }
+      })
+      .catch((error) => console.error(error));
+  }, [facingMode]); // facingMode가 변경될 때마다 useEffect 실행
+
+  const toggleFacingMode = () => {
+    setFacingMode(facingMode === "user" ? "environment" : "user");
+  };
 
   const toggleRecording = () => {
     if (!isRecording) {
@@ -77,7 +95,7 @@ function Upload() {
         </h5>
       </div>
 
-      <div className="absolute bottom-5 right-1/2 translate-x-1/2 z-10">
+      <div className="absolute bottom-10 right-1/2 translate-x-1/2 z-10">
         <button
           onClick={toggleRecording}
           className={`p-2 rounded-full border-2 transition-transform duration-500 ease-in-out ${
@@ -90,6 +108,15 @@ function Upload() {
             } transition-all duration-500 ease-in-out`}
           ></div>
         </button>
+      </div>
+      <div
+        className="absolute bottom-12 right-10 translate-x-1/2 z-10"
+        onClick={toggleFacingMode}
+      >
+        <FontAwesomeIcon
+          className="text-white text-4xl"
+          icon="fa-solid fa-camera-rotate"
+        />
       </div>
     </div>
   );
