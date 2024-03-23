@@ -1,18 +1,23 @@
-const ProductCard = ({ date, today, question, profileUrl, name, thumbnailUrl, availableAfter }) => {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const ProductCard = ({ date, today, question, profileUrl, name, thumbnailUrl, availableAfter = ""}) => {
   return (
     <div className="max-w-2xl mt-8 overflow-hidden bg-white rounded-2xl shadow-xl shadow-slate-200 dark:bg-gray-800">
-      {availableAfter != null ? 
+      {availableAfter == "" ? 
       <img
         className="object-cover w-full h-64"
         src={thumbnailUrl}
         alt="Article"
       />
       :
-      <img
-        className="object-cover w-full h-64 blur-sm"
-        src={thumbnailUrl}
-        alt="Article"
-      />
+      <>
+        <img
+          className="object-cover w-full h-64 grayscale brightness-75"
+          src={thumbnailUrl}
+          alt="Article"
+        />
+        <p className="w-full h-0 transform -translate-y-8 -translate-x-4 text-right text-white"><FontAwesomeIcon icon="fa-solid fa-lock" />&nbsp;&nbsp;{availableAfter}에 열림</p>
+      </>
       }
 
       <div className="p-6">

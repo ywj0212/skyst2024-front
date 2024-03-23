@@ -9,8 +9,7 @@ function Register() {
       </aside>
       <div className="flex-1 flex">
         <div className="mx-10 my-auto w-full lg:max-w-96 flex-col space-y-6">
-          <img className="mx-auto mb-6" src="http://placehold.it/300x100?text=logo_text" />
-
+          <img className="mx-auto mb-6 h-36 w-full -translate-x-1" src="/timecapsule_logo.svg"/>
           <div>
             <label htmlFor="email">이메일</label>
             <br />
