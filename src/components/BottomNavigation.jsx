@@ -7,6 +7,7 @@ import {
   faHeart,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const BottomNavigation = () => {
   return (
@@ -17,9 +18,11 @@ const BottomNavigation = () => {
       <div className="text-gray-500 hover:text-indigo-500">
         <FontAwesomeIcon icon={faSearch} size="lg" />
       </div>
-      <div className="w-16 h-16 absolute bg-indigo-600 flex items-center justify-center bottom-2 right-1/2 transform translate-x-1/2 mb-5 text-white rounded-full p-3 hover:bg-gradient-to-b hover:from-indigo-500 hover:via-indigo-600 hover:to-indigo-700">
-        <FontAwesomeIcon icon={faPlus} size="xl" />
-      </div>
+      <Link to="/upload">
+        <div className="w-16 h-16 absolute bg-indigo-600 flex items-center justify-center bottom-2 right-1/2 transform translate-x-1/2 mb-5 text-white rounded-full p-3 hover:bg-gradient-to-b hover:from-indigo-500 hover:via-indigo-600 hover:to-indigo-700">
+          <FontAwesomeIcon icon={faPlus} size="xl" />
+        </div>
+      </Link>
       <div className="text-white hover:text-indigo-500">
         <FontAwesomeIcon icon={faHeart} size="lg" />
       </div>
