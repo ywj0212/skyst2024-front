@@ -1,31 +1,58 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import VideoThumbnail from "react-video-thumbnail";
+import { useState } from "react";
 
-const ProductCard = ({ date, today, question, profileUrl, name, thumbnailUrl, availableAfter = ""}) => {
+const ProductCard = ({
+  date,
+  today,
+  question,
+  profileUrl,
+  name,
+  videoUrl,
+  availableAfter = "",
+}) => {
+  const [thumbnail, setThumbnail] = useState("");
   return (
     <div className="max-w-2xl mt-8 overflow-hidden bg-white rounded-2xl shadow-xl shadow-slate-200 dark:bg-gray-800">
-      {availableAfter == "" ? 
-      <img
-        className="object-cover w-full h-64"
-        src={thumbnailUrl}
-        alt="Article"
-      />
-      :
-      <>
-        <img
-          className="object-cover w-full h-64 grayscale brightness-75"
-          src={thumbnailUrl}
-          alt="Article"
+      <div className="hidden">
+        <VideoThumbnail
+          videoUrl={videoUrl}
+          thumbnailHandler={(thumbnail) => setThumbnail(thumbnail)}
+          width={0}
+          height={0}
         />
-        <p className="w-full h-0 transform -translate-y-8 -translate-x-4 text-right text-white"><FontAwesomeIcon icon="fa-solid fa-lock" />&nbsp;&nbsp;{availableAfter}에 열림</p>
-      </>
-      }
-
+      </div>
+      {availableAfter === "" ? (
+        <div className="w-full h-64">
+          <img
+            className="object-cover w-full h-full"
+            src={thumbnail}
+            alt="Video Thumbnail"
+          />
+        </div>
+      ) : (
+        <>
+          <div className="relative w-full h-64">
+            <VideoThumbnail
+              videoUrl={videoUrl}
+              thumbnailHandler={(thumbnail) => console.log(thumbnail)}
+              width={1000}
+              height={1000}
+            />
+            <p className="absolute bottom-0 right-0 m-4 text-white">
+              <FontAwesomeIcon icon="fa-solid fa-lock" /> &nbsp;&nbsp;
+              {availableAfter}에 열림
+            </p>
+          </div>
+        </>
+      )}
       <div className="p-6">
         <div>
-          {today ?
-          <span className="text-xs font-medium text-blue-600 uppercase dark:text-blue-400">
-            오늘의 질문
-          </span> : null}
+          {today ? (
+            <span className="text-xs font-medium text-blue-600 uppercase dark:text-blue-400">
+              오늘의 질문
+            </span>
+          ) : null}
           <a
             href="#"
             className="block mt-2 text-xl font-semibold text-gray-800 transition-colors duration-300 transform dark:text-white hover:text-gray-600 hover:underline"
@@ -36,7 +63,6 @@ const ProductCard = ({ date, today, question, profileUrl, name, thumbnailUrl, av
           </a>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400"></p>
         </div>
-
         <div className="mt-4">
           <div className="flex items-center">
             <div className="flex items-center">
